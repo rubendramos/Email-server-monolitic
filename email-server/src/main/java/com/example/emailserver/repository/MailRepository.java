@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 
-public interface MailRepository extends JpaRepository<Mail, Long>{
+public interface MailRepository extends JpaRepository<Message, Long>{
 
-	public List<Mail> findByEmailFrom(String emailAddrress);
+	public List<Message> findByEmailFrom(String emailAddrress);
 }

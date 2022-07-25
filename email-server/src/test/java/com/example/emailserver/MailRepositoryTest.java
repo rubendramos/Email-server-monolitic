@@ -15,7 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.example.emailserver.entity.Address;
 import com.example.emailserver.entity.AddressTypeEnum;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.repository.MailRepository;
 
@@ -33,7 +33,7 @@ public class MailRepositoryTest {
 	public void whenFindBySender_thenReturnsListOfMails() {
 		
 		
-		Mail testMail1 = Mail.builder()
+		Message testMail1 = Message.builder()
 				.emailBody("Hello world")
 				.emailFrom("b@domain.com")
 				.emailTo("a@domain.com")
@@ -42,7 +42,7 @@ public class MailRepositoryTest {
 		//testMail1.addEmailAddres(addressToSet, AddressTypeEnum.TO);
 
 		
-		Mail testMail2 = Mail.builder()	
+		Message testMail2 = Message.builder()	
 				.emailBody("Hello world2")
 				.emailFrom("b@domain.com")
 				.emailTo("a@domain.com")
@@ -53,7 +53,7 @@ public class MailRepositoryTest {
 		mailRepository.save(testMail1);
 		mailRepository.save(testMail2);
 		
-		List<Mail> mailListFrom = mailRepository.findByEmailFrom(testMail1.getEmailFrom());
+		List<Message> mailListFrom = mailRepository.findByEmailFrom(testMail1.getEmailFrom());
 		
 		Assertions.assertThat(mailListFrom.size()).isEqualTo(NUMBER_MAILS_FROMA_A);
 

@@ -1,7 +1,6 @@
 package com.example.emailserver.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -24,21 +23,21 @@ public class InBox implements Serializable {
 	EmailAddressKey id;
 
 	@ManyToOne
-	@MapsId("emailId")
-	@JoinColumn(name = "email_id")
-	Mail mail;
+	@MapsId("messageId")
+	@JoinColumn(name = "message_id")
+	Message message;
 
 	@ManyToOne
 	@MapsId("addressId")
 	@JoinColumn(name = "address_id")
 	Address address;
 
-	public Mail getMail() {
-		return mail;
+	public Message getMessage() {
+		return message;
 	}
 
-	public void setMail(Mail mail) {
-		this.mail = mail;
+	public void setMessage(Message message) {
+		this.message = message;
 	}
 
 	public Address getAddress() {
@@ -106,14 +105,14 @@ public class InBox implements Serializable {
 	public InBox() {
 	}
 
-	public InBox(Mail mail, Address address, AddressTypeEnum emailAddressType, StatusEnum status) {
-		this.mail = mail;
+	public InBox(Message message, Address address, AddressTypeEnum emailAddressType, StatusEnum status) {
+		this.message = message;
 		this.address = address;
 		this.emailAddressType = emailAddressType;
 		this.emailStatus =status;
 		this.emailAddressTypeValue = this.emailAddressType.getAddressTypeId();
 		this.emailStatusValue = this.emailStatus.getStatusId();
-		this.id = new EmailAddressKey(this.mail.getId(), address.getId());
+		this.id = new EmailAddressKey(this.message.getId(), address.getId());
 	}
 
 

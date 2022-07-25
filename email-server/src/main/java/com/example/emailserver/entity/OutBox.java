@@ -21,13 +21,13 @@ public class OutBox implements Serializable {
 	private static final long serialVersionUID = 4301696990442367147L;
 
 	@Id
-    @Column(name = "email_id")
+    @Column(name = "message_id")
     private Long id;
 	
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId
-    @JoinColumn(name="email_id")
-    private Mail mail;
+    @JoinColumn(name="message_id")
+    private Message message;
 	
     @OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
@@ -37,8 +37,8 @@ public class OutBox implements Serializable {
 	public OutBox() {
 	}
 
-	public OutBox(Mail mail, Address address, StatusEnum status) {
-		this.mail = mail;
+	public OutBox(Message message, Address address, StatusEnum status) {
+		this.message = message;
 		this.address = address;
 		this.emailStatus =status;
 	}
@@ -87,12 +87,12 @@ public class OutBox implements Serializable {
 		return id;
 	}
 
-	public Mail getMail() {
-		return mail;
+	public Message getMessage() {
+		return message;
 	}
 
-	public void setMail(Mail mail) {
-		this.mail = mail;
+	public void setMessage(Message mail) {
+		this.message = mail;
 	}
 
 	public Address getEmailAddress() {

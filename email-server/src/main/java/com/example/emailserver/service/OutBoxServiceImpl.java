@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.example.emailserver.entity.Address;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.OutBox;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
@@ -25,9 +25,9 @@ public class OutBoxServiceImpl implements OutBoxService {
 	private final AddressRepository addressRepository;
 
 	@Override
-	public Set<Mail> listEmailsFromAddresAndStatus(String stringAddress, StatusEnum status)
+	public Set<Message> listEmailsFromAddresAndStatus(String stringAddress, StatusEnum status)
 			throws MailServiceException {
-		Set<Mail> listMails = new HashSet<>();
+		Set<Message> listMails = new HashSet<>();
 
 		Address address = addressRepository.findByAddress(stringAddress);
 
@@ -36,20 +36,20 @@ public class OutBoxServiceImpl implements OutBoxService {
 		}
 
 		Set<OutBox> outBoxList = outBoxRepositoty.findByAddressAndEmailStatusValue(address, status.getStatusId());
-		outBoxList.forEach(outBox -> listMails.add(outBox.getMail()));
+		outBoxList.forEach(outBox -> listMails.add(outBox.getMessage()));
 		return listMails;
 	}
 
 	@Override
-	public Set<Mail> listEmailsFromAddres(String addressString) throws MailServiceException {
-		Set<Mail> listMails = new HashSet<>();
+	public Set<Message> listEmailsFromAddres(String addressString) throws MailServiceException {
+		Set<Message> listMails = new HashSet<>();
 		Address address = addressRepository.findByAddress(addressString);
 
 		if (address == null) {
 			throw new NoAddressDomainException(new Object[] { addressString });
 		}
 		Set<OutBox> outBoxList = outBoxRepositoty.findByAddress(address);
-		outBoxList.forEach(outBox -> listMails.add(outBox.getMail()));
+		outBoxList.forEach(outBox -> listMails.add(outBox.getMessage()));
 		return listMails;
 
 	}

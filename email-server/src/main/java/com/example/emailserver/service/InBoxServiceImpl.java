@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.emailserver.entity.Address;
 import com.example.emailserver.entity.InBox;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
 import com.example.emailserver.repository.InBoxRepository;
@@ -25,8 +25,8 @@ public class InBoxServiceImpl implements InBoxService {
 	
 
 	@Override
-	public Set<Mail> listEmailsFromAddresAndStatus(String stringAddress, StatusEnum status) throws MailServiceException{
-		Set<Mail> listMails = new HashSet<>();
+	public Set<Message> listEmailsFromAddresAndStatus(String stringAddress, StatusEnum status) throws MailServiceException{
+		Set<Message> listMails = new HashSet<>();
 		Address address = addressRepository.findByAddress(stringAddress);
 
 		if (address == null) {
@@ -34,13 +34,13 @@ public class InBoxServiceImpl implements InBoxService {
 		}
 
 		Set<InBox> inBoxList = inBoxRepositoty.findByAddressAndEmailStatusValue(address, status.getStatusId());
-		inBoxList.forEach(inBox -> listMails.add(inBox.getMail()));
+		inBoxList.forEach(inBox -> listMails.add(inBox.getMessage()));
 		return listMails;
 	}
 	
 	@Override
-	public Set<Mail> listEmailsFromAddres(String stringAddress) throws MailServiceException{
-		Set<Mail> listMails = new HashSet<>();
+	public Set<Message> listEmailsFromAddres(String stringAddress) throws MailServiceException{
+		Set<Message> listMails = new HashSet<>();
 		Address address = addressRepository.findByAddress(stringAddress);
 
 		if (address == null) {
@@ -48,7 +48,7 @@ public class InBoxServiceImpl implements InBoxService {
 		}
 		
 		Set<InBox> inBoxList = inBoxRepositoty.findByAddress(address);		
-		inBoxList.forEach(inBox -> listMails.add(inBox.getMail()));
+		inBoxList.forEach(inBox -> listMails.add(inBox.getMessage()));
 		return listMails;
 		
 		

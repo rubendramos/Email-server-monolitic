@@ -7,7 +7,7 @@ import java.util.Set;
 import com.example.emailserver.entity.Address;
 import com.example.emailserver.entity.AddressTypeEnum;
 import com.example.emailserver.entity.InBox;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.MailDTO;
 import com.example.emailserver.entity.OutBox;
 import com.example.emailserver.entity.StatusEnum;
@@ -16,18 +16,18 @@ public class MailMapper {
 
 	private static final String MAIL_ADDRESS_SEPARATOR=","; 
 	
-	public static MailDTO convertToDTO(Mail mail) {
+	public static MailDTO convertToDTO(Message mail) {
 		return parseMailToMailDTO(mail);
 	}
 	
 	
-	public static Set<MailDTO> convertToDTO(Set<Mail> mailList) {
+	public static Set<MailDTO> convertToDTO(Set<Message> mailList) {
 		return parseMailToMailDTOList(mailList);
 	}
 	
-	public static Mail convertToEntity(MailDTO mailDTO) {
+	public static Message convertToEntity(MailDTO mailDTO) {
 		
-		Mail mail = Mail.builder().createAt(mailDTO.getCreateAt())				
+		Message mail = Message.builder().createAt(mailDTO.getCreateAt())				
 				.emailBody(mailDTO.getEmailBody())
 				.emailFrom(mailDTO.getEmailFrom())
 				.emailTo(String.join(MAIL_ADDRESS_SEPARATOR,mailDTO.getEmailTo()))
@@ -43,7 +43,7 @@ public class MailMapper {
 	}
 	
 	
-	private static MailDTO parseMailToMailDTO(Mail mail) {
+	private static MailDTO parseMailToMailDTO(Message mail) {
 		MailDTO mailDTO = MailDTO.builder().mailId(mail.getId())
 				.emailBody(mail.getEmailBody())				
 				.createAt(mail.getCreateAt())
@@ -56,7 +56,7 @@ public class MailMapper {
 		return mailDTO;
 	}
 	
-	private static Set<MailDTO> parseMailToMailDTOList(Set<Mail> mails) {
+	private static Set<MailDTO> parseMailToMailDTOList(Set<Message> mails) {
 		Set<MailDTO> mailDTOList = new HashSet<>();
 		mails.forEach(mail -> mailDTOList.add(parseMailToMailDTO(mail)));
 		return mailDTOList;
@@ -84,19 +84,19 @@ public class MailMapper {
 	}
 	
 	
-	private static OutBox addSenderFromMailDTO(Mail mail, MailDTO mailDTO){
+	private static OutBox addSenderFromMailDTO(Message mail, MailDTO mailDTO){
 		Address senderAddress = Address.builder().address(mailDTO.getEmailFrom()).build();
 		return new OutBox(mail, senderAddress, mailDTO.getEmailStatus());
 	}
 	
-	private static Set<InBox> addRecipientsFromMailDTO(Mail mail, MailDTO mailDTO){
+	private static Set<InBox> addRecipientsFromMailDTO(Message mail, MailDTO mailDTO){
 		Set<InBox> recipients = new HashSet<>();
 		recipients.addAll(getEmailAddress(mail,mailDTO.getEmailTo(), AddressTypeEnum.TO, mail.getOutBox().getEmailStatus()));
 		recipients.addAll(getEmailAddress(mail,mailDTO.getEmailCc(), AddressTypeEnum.BCC, mail.getOutBox().getEmailStatus()));
 		return recipients;
 	}
 	
-	private static Set<InBox> getEmailAddress(Mail mail, Set<String> addressList, AddressTypeEnum addressTypeEnum, StatusEnum status ){
+	private static Set<InBox> getEmailAddress(Message mail, Set<String> addressList, AddressTypeEnum addressTypeEnum, StatusEnum status ){
 		Set<InBox> recipients = new HashSet<>();
 			if(addressList != null && !addressList.isEmpty()) {
 			addressList.forEach(addressString-> {

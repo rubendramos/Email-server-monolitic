@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.emailserver.entity.Address;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.MailBoxDTO;
 import com.example.emailserver.entity.MailBoxType;
 import com.example.emailserver.entity.MailDTO;
@@ -51,7 +51,7 @@ public class MailController {
 
 	@GetMapping("/allEmails")
 	public ResponseEntity<Set<MailDTO>> listMails() {
-		Set<Mail> mails = mailService.listAllEmails();
+		Set<Message> mails = mailService.listAllEmails();
 		if (!mails.isEmpty()) {
 			return ResponseEntity.ok(MailMapper.convertToDTO(mails));
 		}
@@ -61,7 +61,7 @@ public class MailController {
 
 	@GetMapping(value = "/{mailId}")
 	public ResponseEntity<MailDTO> mailById(@PathVariable("mailId") Long mailId) {
-		Mail mail = mailService.getMailById(mailId);
+		Message mail = mailService.getMailById(mailId);
 		if (mail != null) {
 			return ResponseEntity.ok(MailMapper.convertToDTO(mail));
 		}
@@ -73,7 +73,7 @@ public class MailController {
 	public ResponseEntity<Set<MailDTO>> listOutBoxMails(@RequestParam String addressParam,
 			@RequestParam int statusParam) throws MailServiceException {		
 		StatusEnum statusEnum = StatusEnum.of(statusParam);
-		Set<Mail> mails = outBoxService.listEmailsFromAddresAndStatus(addressParam, statusEnum);
+		Set<Message> mails = outBoxService.listEmailsFromAddresAndStatus(addressParam, statusEnum);
 		if (!mails.isEmpty()) {
 			return ResponseEntity.ok(MailMapper.convertToDTO(mails));
 		}
@@ -85,7 +85,7 @@ public class MailController {
 			@RequestParam int statusParam) throws MailServiceException{
 		
 		StatusEnum statusEnum = StatusEnum.of(statusParam);
-		Set<Mail> mails = inBoxService.listEmailsFromAddresAndStatus(addressParam, statusEnum);
+		Set<Message> mails = inBoxService.listEmailsFromAddresAndStatus(addressParam, statusEnum);
 		if (!mails.isEmpty()) {
 			return ResponseEntity.ok(MailMapper.convertToDTO(mails));
 		}
@@ -94,7 +94,7 @@ public class MailController {
 	
 	@GetMapping("/mailbox")
 	public ResponseEntity<Set<MailDTO>> listMailBox(@RequestBody MailBoxDTO mailBoxDTO) throws MailServiceException{
-		Set<Mail> mails = null;
+		Set<Message> mails = null;
 		StatusEnum statusEnum = mailBoxDTO.getEmailStatus();
 		String emailAdress = mailBoxDTO.getEmailAddress();
 		
@@ -116,12 +116,12 @@ public class MailController {
 	@PostMapping
 	public ResponseEntity<MailDTO> createMail(@RequestBody MailDTO mailDTO) {
 
-		Mail savedMail = null;
+		Message savedMail = null;
 
 		try {
 
 			if (mailDTO != null) {
-				Mail mail = MailMapper.convertToEntity(mailDTO);
+				Message mail = MailMapper.convertToEntity(mailDTO);
 
 				savedMail = mailService.createMail(mail);
 			}
@@ -136,7 +136,7 @@ public class MailController {
 	@PostMapping("createMultipleEmails")
 	public ResponseEntity<Set<MailDTO>> createMail(@RequestBody MultipleEmailDTO multipleMailDTO) {
 
-		Set<Mail> savedMailSet = null;
+		Set<Message> savedMailSet = null;
 
 		try {
 
@@ -152,12 +152,12 @@ public class MailController {
 	}
 
 	
-	private Set<Mail> saveMailSet(Set<MailDTO> mailDTOSet) {
-		Set<Mail> savedMailSet = new HashSet<>();
+	private Set<Message> saveMailSet(Set<MailDTO> mailDTOSet) {
+		Set<Message> savedMailSet = new HashSet<>();
 		mailDTOSet.forEach(mailDTO -> {
 			try {
-				Mail savedMail = null;
-				Mail mail = MailMapper.convertToEntity(mailDTO);
+				Message savedMail = null;
+				Message mail = MailMapper.convertToEntity(mailDTO);
 				savedMail = mailService.createMail(mail);
 				if (null != savedMail) {
 					savedMailSet.add(savedMail);
@@ -172,7 +172,7 @@ public class MailController {
 
 	@PutMapping(value = "/{mailId}")
 	public ResponseEntity<MailDTO> updateMail(@PathVariable("mailId") Long mailId, @RequestBody MailDTO mailDTO) {
-		Mail mailUpdated = null;
+		Message mailUpdated = null;
 
 		try {
 
@@ -192,7 +192,7 @@ public class MailController {
 
 	@DeleteMapping(value = "/{mailId}")
 	public ResponseEntity<MailDTO> deleteMail(@PathVariable("mailId") Long mailId) {
-		Mail mailDeleted = null;
+		Message mailDeleted = null;
 
 		try {
 
@@ -210,7 +210,7 @@ public class MailController {
 
 	@PostMapping("/deleteMultiple")
 	public ResponseEntity<Set<MailDTO>> deleteMultipleMail(@RequestBody MultipleIdDTO emailsIds) {
-		Set<Mail> deletedMails = null;
+		Set<Message> deletedMails = null;
 
 		try {
 
@@ -229,7 +229,7 @@ public class MailController {
 	
 	@PostMapping(value = "/sendMailById/{mailId}")
 	public ResponseEntity<MailDTO> sendMailById(@PathVariable("mailId") Long mailId) throws MailServiceException, EmailStatusException {
-		Mail mailSended = null;
+		Message mailSended = null;
 
 	
 			mailSended = mailService.sendMail(mailId);

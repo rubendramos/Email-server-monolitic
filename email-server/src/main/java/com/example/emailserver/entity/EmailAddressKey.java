@@ -17,8 +17,8 @@ public class EmailAddressKey implements Serializable{
 
 	public EmailAddressKey(){}
 	
-	@Column(name = "email_id")
-    Long emailId;
+	@Column(name = "message_id")
+    Long messageId;
 
     @Column(name = "address_id")
     Long addressId;

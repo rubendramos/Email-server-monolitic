@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.example.emailserver.entity.Address;
 import com.example.emailserver.entity.AddressTypeEnum;
 import com.example.emailserver.entity.InBox;
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.OutBox;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
@@ -40,18 +40,18 @@ public class MailServiceImpl implements MailService {
 	private final InBoxRepository inBoxRepository;
 
 	@Override
-	public Set<Mail> listAllEmails() {
+	public Set<Message> listAllEmails() {
 		return new HashSet<>(mailRepository.findAll());
 	}
 
 	@Override
-	public Mail getMailById(Long id) {
+	public Message getMailById(Long id) {
 		return mailRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public Mail createMail(Mail mail) throws MailServiceException {
+	public Message createMail(Message mail) throws MailServiceException {
 
 		Address address = addressRepository.findByAddress(mail.getEmailFrom());
 
@@ -67,8 +67,8 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	@Transactional
-	public Mail updateMail(Mail mail) throws MailServiceException {
-		Mail dbMail = this.getMailById(mail.getId());
+	public Message updateMail(Message mail) throws MailServiceException {
+		Message dbMail = this.getMailById(mail.getId());
 
 		if (null != dbMail) {
 			if (dbMail.getOutBox().getEmailStatus() != StatusEnum.BORRADOR) {
@@ -90,9 +90,9 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public Mail deleteMail(Long id) {
+	public Message deleteMail(Long id) {
 		OutBox outBox = null;
-		Mail dbMail = this.getMailById(id);
+		Message dbMail = this.getMailById(id);
 		if (null != dbMail && dbMail.getOutBox().getEmailStatus() != StatusEnum.ELIMINADO) {
 			outBox = dbMail.getOutBox();
 			outBox.setEmailStatus(StatusEnum.ELIMINADO);
@@ -107,12 +107,12 @@ public class MailServiceImpl implements MailService {
 	
 	
 	@Override
-	public Set<Mail> deleteMail(Set<Long> mailsIds) {
-		Set<Mail> deletedMails = new HashSet<>();
+	public Set<Message> deleteMail(Set<Long> mailsIds) {
+		Set<Message> deletedMails = new HashSet<>();
 		
 		
 		mailsIds.forEach(mailId ->{
-			Mail deleteMail = deleteMail(mailId);
+			Message deleteMail = deleteMail(mailId);
 			if(null != deleteMail) {
 				deletedMails.add(deleteMail);
 			}
@@ -123,13 +123,13 @@ public class MailServiceImpl implements MailService {
 	
 
 	@Override
-	public List<Mail> getMailByFrom(String from) {
+	public List<Message> getMailByFrom(String from) {
 		return mailRepository.findByEmailFrom(from);
 	}
 
 	@Override
-	public Mail updateStatus(Long id, StatusEnum status) {
-		Mail dbMail = this.getMailById(id);
+	public Message updateStatus(Long id, StatusEnum status) {
+		Message dbMail = this.getMailById(id);
 		if (null != dbMail) {
 //			dbMail.getOutBox().setEmailStatus(status);
 			return mailRepository.save(dbMail);
@@ -140,8 +140,8 @@ public class MailServiceImpl implements MailService {
 
 
 	@Override
-	public Mail sendMail(Long mailId) throws MailServiceException,EmailStatusException{
-		Mail sendedMail = null;
+	public Message sendMail(Long mailId) throws MailServiceException,EmailStatusException{
+		Message sendedMail = null;
 		
 		
 		try {
@@ -206,7 +206,7 @@ public class MailServiceImpl implements MailService {
 	}
 	
 	
-	private  Set<InBox> generateInboxFromAddress(Mail mail, Set<Address> addressSet, AddressTypeEnum addressTypeEnum, StatusEnum status ){
+	private  Set<InBox> generateInboxFromAddress(Message mail, Set<Address> addressSet, AddressTypeEnum addressTypeEnum, StatusEnum status ){
 		Set<InBox> recipients = new HashSet<>();
 			if(addressSet != null && !addressSet.isEmpty()) {
 			addressSet.forEach(address-> {				

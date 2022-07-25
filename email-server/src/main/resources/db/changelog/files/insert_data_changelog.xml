@@ -53,7 +53,7 @@
 
 	<changeSet author="rubendr"
 		id="insert-init-values-email-table">
-		<insert tableName="tbl_email">
+		<insert tableName="tbl_message">
 			<column name="id" value='99' />
 			<column name="email_body" value='Hello world99' />
 			<column name="email_from" value='b@domain.com' />
@@ -62,7 +62,7 @@
 			<column name="create_at" value='2012-09-17' />
 			<column name="update_at" value='null' />
 		</insert>
-		<insert tableName="tbl_email">
+		<insert tableName="tbl_message">
 			<column name="id" value='100' />
 			<column name="email_body" value='Hello world1' />
 			<column name="email_from" value='a@domain.com' />
@@ -76,35 +76,35 @@
 	<changeSet author="rubendr"
 		id="insert-init-values-email_out-box_table">
 		<insert tableName="tbl_out_box">
-			<column name="email_id" value='99' />
+			<column name="message_id" value='99' />
 			<column name="address_id" value='2' />
 			<column name="email_status" value='1' />
 		</insert>
 		<insert tableName="tbl_out_box">
-			<column name="email_id" value='100' />
+			<column name="message_id" value='100' />
 			<column name="address_id" value='1' />
 			<column name="email_status" value='1' />
 		</insert>
 		<insert tableName="tbl_in_box">
-			<column name="email_id" value='99' />
+			<column name="message_id" value='99' />
 			<column name="address_id" value='1' />
 			<column name="address_type" value='1' />
 			<column name="email_status" value='1' />
 		</insert>
 		<insert tableName="tbl_in_box">
-			<column name="email_id" value='99' />
+			<column name="message_id" value='99' />
 			<column name="address_id" value='3' />
 			<column name="address_type" value='2' />
 			<column name="email_status" value='1' />
 		</insert>
 		<insert tableName="tbl_in_box">
-			<column name="email_id" value='100' />
+			<column name="message_id" value='100' />
 			<column name="address_id" value='2' />
 			<column name="address_type" value='1' />
 			<column name="email_status" value='1' />
 		</insert>
 		<insert tableName="tbl_in_box">
-			<column name="email_id" value='100' />
+			<column name="message_id" value='100' />
 			<column name="address_id" value='3' />
 			<column name="address_type" value='2' />
 			<column name="email_status" value='1' />

@@ -12,9 +12,9 @@
 
 	<changeSet author="rubendr" id="dropTable-tbl_email">
 		<preConditions onFail="MARK_RAN">
-			<tableExists tableName="tbl_email" />
+			<tableExists tableName="tbl_message" />
 		</preConditions>
-		<dropTable cascadeConstraints="true" tableName="tbl_email" />
+		<dropTable cascadeConstraints="true" tableName="tbl_message" />
 	</changeSet>
 
 
@@ -41,9 +41,9 @@
 	</changeSet>
 
 
-	<changeSet author="rubendr" id="createtable-tbl_email">
+	<changeSet author="rubendr" id="createtable-tbl_message">
 
-		<createTable tableName="tbl_email">
+		<createTable tableName="tbl_message">
 			<column name="id" type="serial">
 				<constraints primaryKey="true" />
 			</column>
@@ -61,8 +61,8 @@
 	<changeSet author="rubendr" id="createtable-tbl_out_box">
 
 		<createTable tableName="tbl_out_box">
-			<column name="email_id" type="bigint">
-				<constraints primaryKey="true" foreignKeyName="fk_eMail_out_box" references="tbl_email(id)" />
+			<column name="message_id" type="bigint">
+				<constraints primaryKey="true" foreignKeyName="fk_message_out_box" references="tbl_message(id)" />
 			</column>
 			<column name="address_id" type="bigint">
 				<constraints foreignKeyName="fk_address_out_box" references="tbl_address(id)" />
@@ -73,8 +73,8 @@
 
 	<changeSet author="rubendr" id="createtable-tbl_in_box">
 		<createTable tableName="tbl_in_box">
-			<column name="email_id" type="bigint">
-				<constraints primaryKey="true" foreignKeyName="fk_eMail_in_box" references="tbl_email(id)" />
+			<column name="message_id" type="bigint">
+				<constraints primaryKey="true" foreignKeyName="fk_message_in_box" references="tbl_message(id)" />
 			</column>
 			<column name="address_id" type="bigint">
 				<constraints primaryKey="true" foreignKeyName="fk_address_in_box" references="tbl_address(id)" />

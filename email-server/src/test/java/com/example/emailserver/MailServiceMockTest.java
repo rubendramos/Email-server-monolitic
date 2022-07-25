@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
 import com.example.emailserver.repository.InBoxRepository;
@@ -43,7 +43,7 @@ public class MailServiceMockTest {
 		MockitoAnnotations.initMocks(this);
 		mailService = new MailServiceImpl(mailRepository,addressRepository, outBoxRepository, inBoxRepository);	
 		
-		Mail testMail1 = Mail.builder()
+		Message testMail1 = Message.builder()
 				.emailBody("Hello world")
 				.emailFrom("a@domain.com")				
 				.emailTo("a@domain.com")
@@ -60,13 +60,13 @@ public class MailServiceMockTest {
 	
 	@Test
 	public void whenValidGetId_thenReturnMail() {
-		Mail foundMail = mailService.getMailById(1L);
+		Message foundMail = mailService.getMailById(1L);
 		Assertions.assertThat(foundMail.getEmailBody()).isEqualTo("Hello world");
 	}
 	
 	@Test
 	public void whenValidUpdateStatus_thenReturnNewStatus() {
-		Mail newStatusMail = mailService.updateStatus(1L, StatusEnum.SPAN);
+		Message newStatusMail = mailService.updateStatus(1L, StatusEnum.SPAN);
 		Assertions.assertThat(newStatusMail.getOutBox().getEmailStatus()).isEqualTo(StatusEnum.SPAN);
 		
 		

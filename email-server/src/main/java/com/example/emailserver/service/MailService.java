@@ -3,7 +3,7 @@ package com.example.emailserver.service;
 import java.util.List;
 import java.util.Set;
 
-import com.example.emailserver.entity.Mail;
+import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.StatusEnum;
 import com.example.emailserver.service.exception.EmailStatusException;
 import com.example.emailserver.service.exception.MailServiceException;
@@ -14,34 +14,34 @@ public interface MailService {
 	 * Retrieves all mails list
 	 * @return
 	 */
-	public Set<Mail> listAllEmails();
+	public Set<Message> listAllEmails();
 	
 	/**
 	 * Gets mail by id
 	 * @param id
 	 * @return
 	 */
-	public Mail getMailById(Long id);
+	public Message getMailById(Long id);
 	
 	/**
 	 * Create a mail
 	 * @param mail
 	 * @return
 	 */
-	public Mail createMail(Mail mail) throws MailServiceException;	
+	public Message createMail(Message mail) throws MailServiceException;	
 	/**
 	 * Update a mail
 	 * @param mail
 	 * @return
 	 */
-	public Mail updateMail(Mail mail) throws MailServiceException;
+	public Message updateMail(Message mail) throws MailServiceException;
 	
 	/**
 	 * Delete a mail
 	 * @param id
 	 * @return
 	 */
-	public Mail deleteMail(Long id);
+	public Message deleteMail(Long id);
 	
 	
 	/**
@@ -49,14 +49,14 @@ public interface MailService {
 	 * @param id
 	 * @return
 	 */
-	public Set<Mail> deleteMail(Set<Long> id);
+	public Set<Message> deleteMail(Set<Long> id);
 	
 	/**
 	 * Gets mails by emailfrom
 	 * @param from
 	 * @return
 	 */
-	public List<Mail> getMailByFrom(String emailAddrress);
+	public List<Message> getMailByFrom(String emailAddrress);
 	
 	/**
 	 * Update mail status
@@ -64,14 +64,14 @@ public interface MailService {
 	 * @param status
 	 * @return
 	 */
-	public Mail updateStatus(Long id, StatusEnum status);
+	public Message updateStatus(Long id, StatusEnum status);
 	
 	/**
 	 * Send a mail
 	 * @param idMail
 	 * @return
 	 */
-	public Mail sendMail(Long idMail) throws MailServiceException, EmailStatusException;
+	public Message sendMail(Long idMail) throws MailServiceException, EmailStatusException;
 	
 
 	
