@@ -1,4 +1,4 @@
-package com.example.emailserver.entity;
+package com.example.emailserver.dto;
 
 import java.util.Set;
 

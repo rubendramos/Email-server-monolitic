@@ -1,4 +1,4 @@
-package com.example.emailserver.entity;
+package com.example.emailserver.enums;
 
 import java.util.stream.Stream;
 

@@ -1,4 +1,7 @@
-package com.example.emailserver.entity;
+package com.example.emailserver.dto;
+
+import com.example.emailserver.enums.MailBoxType;
+import com.example.emailserver.enums.StatusEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

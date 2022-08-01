@@ -13,9 +13,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.example.emailserver.enums.AddressTypeEnum;
+import com.example.emailserver.enums.StatusEnum;
+
 @Entity
 @Table(name = "tbl_in_box")
-public class InBox implements Serializable {
+public class InBox implements Serializable,Email {
 
 	private static final long serialVersionUID = 5378871332096374447L;
 
@@ -100,6 +103,22 @@ public class InBox implements Serializable {
 		
 	}
 	
+	
+	public StatusEnum getEmailStatus() {
+		return emailStatus;
+	}
+
+	public void setEmailStatus(StatusEnum emailStatus) {
+		this.emailStatus = emailStatus;
+	}
+
+	public int getEmailStatusValue() {
+		return emailStatusValue;
+	}
+
+	public void setEmailStatusValue(int emailStatusValue) {
+		this.emailStatusValue = emailStatusValue;
+	}
 	
 
 	public InBox() {

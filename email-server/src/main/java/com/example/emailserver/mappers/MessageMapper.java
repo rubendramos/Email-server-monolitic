@@ -1,18 +1,18 @@
-package com.example.emailserver.contoller;
+package com.example.emailserver.mappers;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.example.emailserver.dto.MailDTO;
 import com.example.emailserver.entity.Address;
-import com.example.emailserver.entity.AddressTypeEnum;
 import com.example.emailserver.entity.InBox;
 import com.example.emailserver.entity.Message;
-import com.example.emailserver.entity.MailDTO;
 import com.example.emailserver.entity.OutBox;
-import com.example.emailserver.entity.StatusEnum;
+import com.example.emailserver.enums.AddressTypeEnum;
+import com.example.emailserver.enums.StatusEnum;
 
-public class MailMapper {
+public class MessageMapper {
 
 	private static final String MAIL_ADDRESS_SEPARATOR=","; 
 	
@@ -48,7 +48,7 @@ public class MailMapper {
 				.emailBody(mail.getEmailBody())				
 				.createAt(mail.getCreateAt())
 				.updateAt(mail.getUpdateAt())
-				.emailFrom(mail.getOutBox().getEmailAddress().getAddress())
+				.emailFrom(mail.getOutBox().getAddress().getAddress())
 				.emailTo(new HashSet<String>(Arrays.asList(mail.getEmailTo().split(MAIL_ADDRESS_SEPARATOR))))
 				.emailCc(new HashSet<String>(Arrays.asList(mail.getEmailCc().split(MAIL_ADDRESS_SEPARATOR))))
 				.emailStatus(mail.getOutBox().getEmailStatus()).build();

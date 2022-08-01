@@ -12,11 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.emailserver.entity.Address;
-import com.example.emailserver.entity.AddressTypeEnum;
-import com.example.emailserver.entity.InBox;
 import com.example.emailserver.entity.Message;
 import com.example.emailserver.entity.OutBox;
-import com.example.emailserver.entity.StatusEnum;
+import com.example.emailserver.enums.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
 import com.example.emailserver.repository.InBoxRepository;
 import com.example.emailserver.repository.MailRepository;
@@ -24,20 +22,22 @@ import com.example.emailserver.repository.OutBoxRepository;
 import com.example.emailserver.service.exception.EmailStatusException;
 import com.example.emailserver.service.exception.MailServiceException;
 import com.example.emailserver.service.exception.NoAddressDomainException;
-import com.example.emailserver.utils.EmailServerUtils;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MailServiceImpl implements MailService {
+public class MessageServiceImpl implements MessageService {
 	
-	Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
+	private static final String ERROR_UPDATE_MESSAGE = "No se puede actualizar el mensage. Su estado es de ";
+	
+	Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
+	
 
 	private final MailRepository mailRepository;
 	private final AddressRepository addressRepository;
 	private final OutBoxRepository outBoxRepository;
-	private final InBoxRepository inBoxRepository;
+
 
 	@Override
 	public Set<Message> listAllEmails() {
@@ -72,7 +72,7 @@ public class MailServiceImpl implements MailService {
 
 		if (null != dbMail) {
 			if (dbMail.getOutBox().getEmailStatus() != StatusEnum.BORRADOR) {
-				throw new EmailStatusException("", new Object[] { mail });
+				throw new EmailStatusException(ERROR_UPDATE_MESSAGE + dbMail.getOutBox().getEmailStatus(), new Object[] { mail });
 			} else {
 
 				dbMail.setEmailBody(mail.getEmailBody());
@@ -138,83 +138,84 @@ public class MailServiceImpl implements MailService {
 	}
 
 
+//
+//	@Override
+//	public Message sendMail(Long mailId) throws MailServiceException,EmailStatusException{
+//		Message sendedMail = null;
+//		
+//		
+//		try {
+//		
+//		sendedMail = this.getMailById(mailId);
+//		
+//		Set<String> addressStringToSet = EmailServerUtils.getAddressSet(sendedMail.getEmailTo());
+//		Set<String> addressStringCcSet =  EmailServerUtils.getAddressSet(sendedMail.getEmailCc());
+//		
+//		Set<Address> validAddressTo = validateAddressSet(addressStringToSet);
+//		Set<Address> validAddressCc = validateAddressSet(addressStringCcSet);
+//		
+//		Set<InBox> inBoxTo = generateInboxFromAddress(sendedMail,validAddressTo,AddressTypeEnum.TO,StatusEnum.ENVIADO);
+//		Set<InBox> inBoxCC = generateInboxFromAddress(sendedMail,validAddressCc,AddressTypeEnum.CC,StatusEnum.ENVIADO);
+//		
+//		sendedMail.getRecipients().addAll(inBoxTo);
+//		sendedMail.getRecipients().addAll(inBoxCC);
+//		
+//		OutBox outBox = sendedMail.getOutBox();
+//		
+//		
+//		if(outBox.getEmailStatus() == StatusEnum.BORRADOR) {
+//			outBox.setEmailStatusValue(StatusEnum.ENVIADO.getStatusId());
+//			inBoxRepository.saveAll(sendedMail.getRecipients());
+//			outBoxRepository.save(outBox);
+//			
+//			
+//		} else {
+//			throw new EmailStatusException("Mail Status : "+ outBox.getEmailStatus()+". Mail will not be sended", new Object[] {sendedMail});
+//		}
+//		
+//		
+//		}catch(Exception e) {
+//			logger.error("Error saving mail with id:" + mailId);
+//			throw new MailServiceException(e,new Object[] {"Error sending mail with id: " +mailId ,sendedMail});
+//		}
+//		
+//		return sendedMail;
+//		
+//		
+//	}
+//	
+	
+	
 
-	@Override
-	public Message sendMail(Long mailId) throws MailServiceException,EmailStatusException{
-		Message sendedMail = null;
-		
-		
-		try {
-		
-		sendedMail = this.getMailById(mailId);
-		
-		Set<String> addressStringToSet = EmailServerUtils.getAddressSet(sendedMail.getEmailTo());
-		Set<String> addressStringCcSet =  EmailServerUtils.getAddressSet(sendedMail.getEmailCc());
-		
-		Set<Address> validAddressTo = validateAddressSet(addressStringToSet);
-		Set<Address> validAddressCc = validateAddressSet(addressStringCcSet);
-		
-		Set<InBox> inBoxTo = generateInboxFromAddress(sendedMail,validAddressTo,AddressTypeEnum.TO,StatusEnum.ENVIADO);
-		Set<InBox> inBoxCC = generateInboxFromAddress(sendedMail,validAddressCc,AddressTypeEnum.CC,StatusEnum.ENVIADO);
-		
-		sendedMail.getRecipients().addAll(inBoxTo);
-		sendedMail.getRecipients().addAll(inBoxCC);
-		
-		OutBox outBox = sendedMail.getOutBox();
-		
-		
-		if(outBox.getEmailStatus() == StatusEnum.BORRADOR) {
-			outBox.setEmailStatusValue(StatusEnum.ENVIADO.getStatusId());
-			outBoxRepository.save(outBox);
-			inBoxRepository.saveAll(sendedMail.getRecipients());
-			
-		} else {
-			throw new EmailStatusException("Mail Status : "+ outBox.getEmailStatus()+". Mail will not be sended", new Object[] {sendedMail});
-		}
-		
-		
-		}catch(Exception e) {
-			logger.error("Error saving mail with id:" + mailId);
-			throw new MailServiceException(e,new Object[] {"Error sending mail with id: " +mailId ,sendedMail});
-		}
-		
-		return sendedMail;
-		
-		
-	}
 	
 	
-	
-
-	
-	
-	private Set<Address> validateAddressSet(Set<String> stringAddressSet){
-		Set<Address> validAddress = new HashSet<>();
-		stringAddressSet.forEach(stringAddress->{
-			Address address = validateAddress(stringAddress);
-			if(null != address) {
-				validAddress.add(address);
-			}
-			
-		});
-		
-		return validAddress;
-	}
-	
-	private Address validateAddress(String address) {
-		return addressRepository.findByAddress(address);
-	}
-	
-	
-	private  Set<InBox> generateInboxFromAddress(Message mail, Set<Address> addressSet, AddressTypeEnum addressTypeEnum, StatusEnum status ){
-		Set<InBox> recipients = new HashSet<>();
-			if(addressSet != null && !addressSet.isEmpty()) {
-			addressSet.forEach(address-> {				
-				recipients.add(new InBox(mail, address, addressTypeEnum, status));
-			});
-		}
-		return recipients;	
-	}
+//	private Set<Address> validateAddressSet(Set<String> stringAddressSet){
+//		Set<Address> validAddress = new HashSet<>();
+//		stringAddressSet.forEach(stringAddress->{
+//			Address address = validateAddress(stringAddress);
+//			if(null != address) {
+//				validAddress.add(address);
+//			}
+//			
+//		});
+//		
+//		return validAddress;
+//	}
+//	
+//	private Address validateAddress(String address) {
+//		return addressRepository.findByAddress(address);
+//	}
+//	
+//	
+//	private  Set<InBox> generateInboxFromAddress(Message mail, Set<Address> addressSet, AddressTypeEnum addressTypeEnum, StatusEnum status ){
+//		Set<InBox> recipients = new HashSet<>();
+//			if(addressSet != null && !addressSet.isEmpty()) {
+//			addressSet.forEach(address-> {				
+//				recipients.add(new InBox(mail, address, addressTypeEnum, status));
+//			});
+//		}
+//		return recipients;	
+//	}
 	
 	
 	

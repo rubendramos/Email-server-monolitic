@@ -1,7 +1,9 @@
-package com.example.emailserver.entity;
+package com.example.emailserver.dto;
 
 import java.util.Date;
 import java.util.Set;
+
+import com.example.emailserver.enums.StatusEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

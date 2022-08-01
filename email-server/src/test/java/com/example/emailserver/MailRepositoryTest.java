@@ -14,9 +14,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.example.emailserver.entity.Address;
-import com.example.emailserver.entity.AddressTypeEnum;
 import com.example.emailserver.entity.Message;
-import com.example.emailserver.entity.StatusEnum;
+import com.example.emailserver.enums.AddressTypeEnum;
+import com.example.emailserver.enums.StatusEnum;
 import com.example.emailserver.repository.MailRepository;
 
 

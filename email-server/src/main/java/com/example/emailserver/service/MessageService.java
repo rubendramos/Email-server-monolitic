@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.emailserver.entity.Message;
-import com.example.emailserver.entity.StatusEnum;
-import com.example.emailserver.service.exception.EmailStatusException;
+import com.example.emailserver.enums.StatusEnum;
 import com.example.emailserver.service.exception.MailServiceException;
 
-public interface MailService {
+public interface MessageService {
 
 	/**
 	 * Retrieves all mails list
@@ -66,13 +65,13 @@ public interface MailService {
 	 */
 	public Message updateStatus(Long id, StatusEnum status);
 	
-	/**
-	 * Send a mail
-	 * @param idMail
-	 * @return
-	 */
-	public Message sendMail(Long idMail) throws MailServiceException, EmailStatusException;
-	
+//	/**
+//	 * Send a mail
+//	 * @param idMail
+//	 * @return
+//	 */
+//	public Message sendMail(Long idMail) throws MailServiceException, EmailStatusException;
+//	
 
 	
 	

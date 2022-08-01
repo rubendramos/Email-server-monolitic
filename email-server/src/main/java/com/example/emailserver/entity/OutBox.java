@@ -14,9 +14,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.example.emailserver.enums.StatusEnum;
+
 @Entity
 @Table(name = "tbl_out_box")
-public class OutBox implements Serializable {
+public class OutBox implements Serializable,Email {
 
 	private static final long serialVersionUID = 4301696990442367147L;
 
@@ -95,11 +97,11 @@ public class OutBox implements Serializable {
 		this.message = mail;
 	}
 
-	public Address getEmailAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setEmailAddress(Address addressId) {
+	public void setAddress(Address addressId) {
 		this.address = addressId;
 	}
 

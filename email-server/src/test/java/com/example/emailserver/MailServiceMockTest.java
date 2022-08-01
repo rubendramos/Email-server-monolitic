@@ -13,13 +13,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.emailserver.entity.Message;
-import com.example.emailserver.entity.StatusEnum;
+import com.example.emailserver.enums.StatusEnum;
 import com.example.emailserver.repository.AddressRepository;
 import com.example.emailserver.repository.InBoxRepository;
 import com.example.emailserver.repository.MailRepository;
 import com.example.emailserver.repository.OutBoxRepository;
-import com.example.emailserver.service.MailService;
-import com.example.emailserver.service.MailServiceImpl;
+import com.example.emailserver.service.MessageService;
+import com.example.emailserver.service.MessageServiceImpl;
 
 @SpringBootTest
 public class MailServiceMockTest {
@@ -36,12 +36,12 @@ public class MailServiceMockTest {
 	@Mock
 	private InBoxRepository inBoxRepository;
 	
-	private MailService mailService;
+	private MessageService mailService;
 	
 	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		mailService = new MailServiceImpl(mailRepository,addressRepository, outBoxRepository, inBoxRepository);	
+		mailService = new MessageServiceImpl(mailRepository,addressRepository, outBoxRepository);	
 		
 		Message testMail1 = Message.builder()
 				.emailBody("Hello world")

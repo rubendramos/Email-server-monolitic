@@ -161,7 +161,7 @@ public class EmailServerExceptionHandler  extends ResponseEntityExceptionHandler
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
         //
-        final EmailApiServerError emailApiServerError = new EmailApiServerError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), "Incorrect Mail Status to send email");
+        final EmailApiServerError emailApiServerError = new EmailApiServerError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), "Incorrect Status sending email");
         return new ResponseEntity<Object>(emailApiServerError, new HttpHeaders(), emailApiServerError.getStatus());
     }
     
@@ -171,7 +171,7 @@ public class EmailServerExceptionHandler  extends ResponseEntityExceptionHandler
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
         //
-        final EmailApiServerError emailApiServerError = new EmailApiServerError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+        final EmailApiServerError emailApiServerError = new EmailApiServerError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), "Error al procesar un Email");
         return new ResponseEntity<Object>(emailApiServerError, new HttpHeaders(), emailApiServerError.getStatus());
     }
 	
